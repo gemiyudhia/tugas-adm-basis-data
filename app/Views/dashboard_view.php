@@ -38,11 +38,13 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="/dashboard/create" method="post">
+          <form action="/dashboard/create" method="POST">
             <div class="row">
               <div class="col mb-3">
                 <label for="name" class="form-label">Nama Film</label>
                 <input type="text" name="nama_film" class="form-control" placeholder="Masukkan nama film" required>
+              </div>
+              <div class="col mb-3">
                 <label for="genre" class="form-label">Genre</label>
                 <select name="genre" class="form-select" required>
                   <option value="" disabled selected>Pilih genre</option>
@@ -56,12 +58,13 @@
               <div class="col mb-3">
                 <label for="duration" class="form-label">Durasi</label>
                 <input type="text" name="durasi" class="form-control" placeholder="Durasi dalam menit" required>
+              </div>
+              <div class="col mb-3">
                 <label for="sinopsis" class="form-label">Sinopsis</label>
                 <textarea name="sinopsis" class="form-control" rows="4" placeholder="Masukkan sinopsis"
                   required></textarea>
               </div>
             </div>
-            <!-- Tombol aksi -->
             <div class="text-end">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
               <button type="submit" class="btn btn-primary">Tambah Film</button>
@@ -71,6 +74,7 @@
       </div>
     </div>
   </div>
+
 
   <?php if(session()->getFlashdata('success')): ?>
   <div class="alert alert-success" role="alert">
@@ -107,10 +111,14 @@
               <a href="/dashboard/delete/<?= $movie['id'] ?>" class="btn btn-sm btn-danger text-white fw-bold"
                 onclick="return confirm('Are you sure?')">Hapus</a>
             </td>
-
           </tr>
           <?php endforeach; ?>
         </tbody>
+        <?php if(session()->getFlashdata('errors')): ?>
+        <div class="alert alert-danger" role="alert">
+          <?= implode('<br>', session()->getFlashdata('errors')) ?>
+        </div>
+        <?php endif; ?>
       </table>
     </div>
   </div>

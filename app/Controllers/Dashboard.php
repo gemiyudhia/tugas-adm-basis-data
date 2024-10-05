@@ -28,17 +28,31 @@ class Dashboard extends Controller
 
 
     public function create()
-    {
+    {   
+        // Validasi input
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'nama_film' => 'required',
+            'genre' => 'required',
+            'durasi' => 'required',
+            'sinopsis' => 'required'
+        ]);
+
+        if (!$this->validate($validation->getRules())) {
+            return redirect()->to('/dashboard')->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         // Menggunakan movieModel untuk menyimpan data
         $this->movieModel->save([
             'nama_film' => $this->request->getPost('nama_film'),
-            'genre_id' => $this->request->getPost('genre'), // Ambil genre dari select
-            'durasi' => $this->request->getPost('durasi'),
+            'id_genre' => $this->request->getPost('genre'), // Pastikan ini sesuai
+            'duration' => $this->request->getPost('durasi'),
             'sinopsis' => $this->request->getPost('sinopsis')
         ]);
 
-        return redirect()->to('/dashboard'); // Redirect ke halaman dashboard
+        return redirect()->to('/dashboard')->with('success', 'Film berhasil ditambahkan!');
     }
+
 
     public function edit($id)
     {
